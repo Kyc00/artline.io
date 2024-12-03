@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artistic Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('./bak/1.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(36, 68, 98, 0.7);
+            z-index: 0;
+        }
+
+        header, main, footer, .corner-lines {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 101;
+        }
+
+        .back-btn a {
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        .site-title {
+            text-align: center;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 28px;
+            background: linear-gradient(45deg, #fff, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Main content */
+        .menu-container {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            z-index: 1;
+        }
+
+        .menu-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #0ff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .menu-item h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #0ff;  /* 青色 */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 
+                0 0 5px #0ff,
+                0 0 10px #0ff,
+                0 0 20px #0ff;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover h2 {
+            text-shadow: 
+                0 0 5px #0ff,
+                0 0 10px #0ff,
+                0 0 20px #0ff,
+                0 0 40px #0ff;
+            transform: scale(1.05);
+        }
+
+        /* Corner lines */
+        .corner-lines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .corner-line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .line-top-left {
+            top: 0;
+            left: 0;
+            width: 30%;
+            height: 2px;
+            transform-origin: left;
+            transform: rotate(45deg);
+        }
+
+        .line-top-right {
+            top: 0;
+            right: 0;
+            width: 30%;
+            height: 2px;
+            transform-origin: right;
+            transform: rotate(-45deg);
+        }
+
+        .line-bottom-left {
+            bottom: 0;
+            left: 0;
+            width: 30%;
+            height: 2px;
+            transform-origin: left;
+            transform: rotate(-45deg);
+        }
+
+        .line-bottom-right {
+            bottom: 0;
+            right: 0;
+            width: 30%;
+            height: 2px;
+            transform-origin: right;
+            transform: rotate(45deg);
+        }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 0;
+            background-color: transparent;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+        }
+
+        .fa-qq:hover { color: #12B7F5; }
+        .fa-weixin:hover { color: #7BB32E; }
+        .fa-github:hover { color: #6e5494; }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+        }
+
+        /* 在style标签中添加禁用状态的样式 */
+        .menu-item.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            border-color: #666;
+        }
+
+        .menu-item.disabled h2 {
+            color: #666;
+            text-shadow: 
+                0 0 5px rgba(102, 102, 102, 0.5),
+                0 0 10px rgba(102, 102, 102, 0.3);
+        }
+
+        .menu-item.disabled:hover {
+            transform: none;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 10px rgba(102, 102, 102, 0.3);
+        }
+
+        .menu-item.disabled:hover h2 {
+            transform: none;
+            text-shadow: 
+                0 0 5px rgba(102, 102, 102, 0.5),
+                0 0 10px rgba(102, 102, 102, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="corner-lines">
+        <div class="corner-line line-top-left"></div>
+        <div class="corner-line line-top-right"></div>
+        <div class="corner-line line-bottom-left"></div>
+        <div class="corner-line line-bottom-right"></div>
+    </div>
+
+    <header>
+        <div class="back-btn">
+            <a href="index.html" onclick="return fadeOutTransition(this.href);" title="返回主页">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        <h1 class="site-title">Western Artworks</h1>
+    </header>
+
+    <main>
+        <div class="menu-container">
+            <a href="show.html" class="menu-item" onclick="return fadeOutTransition(this.href);">
+                <h2>欧美画作精选</h2>
+            </a>
+            <div class="menu-item disabled">
+                <h2>水墨画精选</h2>
+            </div>
+            <div class="menu-item disabled">
+                <h2>现代艺术精选</h2>
+            </div>
+            <a href="4.html" class="menu-item" onclick="return fadeOutTransition(this.href);">
+                <h2>数字视觉</h2>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#" class="social-icon" title="QQ">
+                <i class="fab fa-qq"></i>
+            </a>
+            <a href="#" class="social-icon" title="微信">
+                <i class="fab fa-weixin"></i>
+            </a>
+            <a href="#" class="social-icon" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+    function fadeOutTransition(href) {
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+            window.location.href = href;
+        }, 500);
+        return false;
+    }
+
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            document.body.classList.remove('fade-out');
+        }
+    });
+    </script>
+</body>
+</html> 

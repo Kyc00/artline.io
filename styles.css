@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    background-color: #000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    animation: fadeIn 0.5s ease-in;
+}
+
+header {
+    padding: 2vh 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    width: 100%;
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.1);
+}
+
+@supports not (backdrop-filter: blur(8px)) {
+    header {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: clamp(10px, 1.5vw, 20px);
+    flex-wrap: nowrap;
+    padding: 0 2vw;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: clamp(4px, 0.8vh, 8px) clamp(8px, 1.2vw, 15px);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-size: clamp(12px, 1.2vw, 16px);
+    white-space: nowrap;
+}
+
+nav a:hover {
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 4vh 2vw;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    margin: clamp(40px, 10vh, 100px) 0;
+    font-size: clamp(3rem, 7vw, 5rem);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.2em;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 2px solid white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+h2:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+    color: #7BB32E;
+    border-color: #7BB32E;
+    text-shadow: 2px 2px 4px rgba(123, 179, 46, 0.5);
+}
+
+footer {
+    width: 100%;
+    padding: clamp(15px, 2vh, 25px);
+    background-color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    margin-top: auto;
+}
+
+.social-icons {
+    margin-top: clamp(8px, 1vh, 15px);
+    display: flex;
+    justify-content: center;
+    gap: clamp(15px, 2vw, 25px);
+}
+
+.social-icon {
+    color: white;
+    font-size: clamp(20px, 2.5vw, 28px);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.social-icon:hover {
+    transform: translateY(-5px);
+}
+
+.social-icon::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: clamp(10px, 1vw, 14px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+.social-icon:hover::after {
+    opacity: 1;
+}
+
+/* 图标悬停颜色保持不变 */
+.fa-qq:hover {
+    color: #12B7F5;
+}
+
+.fa-weixin:hover {
+    color: #7BB32E;
+}
+
+.fa-github:hover {
+    color: #6e5494;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    nav ul {
+        gap: 5px;
+    }
+    
+    h1 {
+        margin: 5vh 0;
+    }
+}
+
+/* 添加视频背景样式 */
+.background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    object-fit: cover;
+}
+
+/* 添加页面过渡动画相关样式 */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* 添加初始渐入效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+body {
+    /* 保持原有样式... */
+    animation: fadeIn 0.5s ease-in;
+} 

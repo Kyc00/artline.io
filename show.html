@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>艺术画展示</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #244462;
+            color: white;
+        }
+
+        .shell {
+            width: 90%;
+            height: 400px;
+            display: flex;
+        }
+
+        .box {
+            flex: 1;
+            overflow: hidden;
+            transition: .5s;
+            margin: 0 12px;
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, .5);
+            border-radius: 15px;
+            border: 6px solid #fff;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .box > img {
+            width: 200%;
+            height: 85%;
+            object-fit: cover;
+            transition: .5s;
+        }
+
+        .box > span {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            text-align: center;
+            height: 15%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .box:hover {
+            flex-basis: 40%;
+        }
+
+        .box:hover > img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 添加返回按钮样式 */
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .back-btn a {
+            color: white;
+            font-size: 24px;
+        }
+
+        /* 添加header样式 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .site-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 28px;
+            color: white;
+            text-align: center;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(45deg, #fff, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 添加footer样式 */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+        }
+
+        .fa-qq:hover {
+            color: #12B7F5;
+        }
+
+        .fa-weixin:hover {
+            color: #7BB32E;
+        }
+
+        .fa-github:hover {
+            color: #6e5494;
+        }
+
+        /* 添加图片简介样式 */
+        .image-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 8px;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            text-align: center;
+            pointer-events: none;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+        .box:hover .image-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 添加翻页按钮样式 */
+        .page-navigation {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .nav-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .prev-btn:hover i {
+            transform: translateX(-3px);
+        }
+
+        .next-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        /* 添加页码样式 */
+        .page-number {
+            font-size: 20px;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: 'Cinzel Decorative', cursive;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="back-btn">
+            <a href="javascript:history.back()" title="返回上一页">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        <h1 class="site-title">Western Artworks</h1>
+    </header>
+
+    <div class="shell">
+        <div class="box">
+            <img src="./im1/1.jpg">
+            <span>星空下的舞者</span>
+            <div class="image-description">
+                在无尽的星空下，舞者用身体诉说着永恒的故事
+            </div>
+        </div>
+        <div class="box">
+            <img src="./im1/2.jpg">
+            <span>城市印象</span>
+            <div class="image-description">
+                钢筋水泥中流淌着都市人的诗意与梦想
+            </div>
+        </div>
+        <div class="box">
+            <img src="./im1/3.jpg">
+            <span>自然之声</span>
+            <div class="image-description">
+                聆听大地的呼吸，感受生命的律动
+            </div>
+        </div>
+        <div class="box">
+            <img src="./im1/4.jpg">
+            <span>光影交织</span>
+            <div class="image-description">
+                光与影的交错中，演绎着时光的故事
+            </div>
+        </div>
+        <div class="box">
+            <img src="./im1/5.jpg">
+            <span>时光之河</span>
+            <div class="image-description">
+                岁月如河，承载着无尽的回忆与憧憬
+            </div>
+        </div>
+    </div>
+
+    <!-- 在footer之前添加翻页按钮 -->
+    <div class="page-navigation">
+        <a href="#" class="nav-btn prev-btn" title="上一页">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <div class="page-number">1</div>
+        <a href="#" class="nav-btn next-btn" title="下一页">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#" class="social-icon" title="QQ">
+                <i class="fab fa-qq"></i>
+            </a>
+            <a href="#" class="social-icon" title="微信">
+                <i class="fab fa-weixin"></i>
+            </a>
+            <a href="#" class="social-icon" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+    // 图片数据
+    const artworks = [
+        {
+            id: 1,
+            src: './im1/1.jpg',
+            title: '星空下的舞者',
+            description: '在无尽的星空下，舞者用身体诉说着永恒的故事'
+        },
+        {
+            id: 2,
+            src: './im1/2.jpg',
+            title: '城市印象',
+            description: '钢筋水泥中流淌着都市人的诗意与梦想'
+        },
+        {
+            id: 3,
+            src: './im1/3.jpg',
+            title: '自然之声',
+            description: '聆听大地的呼吸，感受生命的律动'
+        },
+        {
+            id: 4,
+            src: './im1/4.jpg',
+            title: '光影交织',
+            description: '光与影的交错中，演绎着时光的故事'
+        },
+        {
+            id: 5,
+            src: './im1/5.jpg',
+            title: '时光之河',
+            description: '岁月如河，承载着无尽的回忆与憧憬'
+        },
+        {
+            id: 6,
+            src: './im1/6.jpg',
+            title: '梦境花园',
+            description: '在梦的花园里，绽放着无限的可能'
+        },
+        {
+            id: 7,
+            src: './im1/7.jpg',
+            title: '海洋之心',
+            description: '深邃的海洋，孕育着生命的奇迹'
+        },
+        {
+            id: 8,
+            src: './im1/8.jpg',
+            title: '山川之歌',
+            description: '巍峨的山脉，唱响着大地的赞歌'
+        },
+        {
+            id: 9,
+            src: './im1/9.jpg',
+            title: '春之语',
+            description: '春天的细语，诉说着生命的轮回'
+        },
+        {
+            id: 10,
+            src: './im1/10.jpg',
+            title: '秋之韵',
+            description: '秋天的韵律，演绎着岁月的沉淀'
+        }
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 5;
+
+    function updateGallery(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const currentArtworks = artworks.slice(start, end);
+        
+        const shell = document.querySelector('.shell');
+        shell.innerHTML = '';  // 清空当前内容
+
+        currentArtworks.forEach(artwork => {
+            shell.innerHTML += `
+                <div class="box">
+                    <img src="${artwork.src}">
+                    <span>${artwork.title}</span>
+                    <div class="image-description">
+                        ${artwork.description}
+                    </div>
+                </div>
+            `;
+        });
+
+        // 更新页码显示
+        document.querySelector('.page-number').textContent = page;
+
+        // 更新按钮状态
+        document.querySelector('.prev-btn').style.opacity = page === 1 ? '0.5' : '1';
+        document.querySelector('.prev-btn').style.pointerEvents = page === 1 ? 'none' : 'auto';
+        
+        const maxPage = Math.ceil(artworks.length / itemsPerPage);
+        document.querySelector('.next-btn').style.opacity = page === maxPage ? '0.5' : '1';
+        document.querySelector('.next-btn').style.pointerEvents = page === maxPage ? 'none' : 'auto';
+    }
+
+    // 添加事件监听
+    document.querySelector('.prev-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (currentPage > 1) {
+            currentPage--;
+            updateGallery(currentPage);
+        }
+    });
+
+    document.querySelector('.next-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        const maxPage = Math.ceil(artworks.length / itemsPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            updateGallery(currentPage);
+        }
+    });
+
+    // 初始化显示
+    updateGallery(currentPage);
+    </script>
+</body>
+</html> 
